@@ -4,8 +4,8 @@ header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
-include_once "prompt.php";
-include_once 'config.php';
+include_once "./prompt.php";
+include_once "./config.php";
 
 // Function to send a query to Gemini AI
 function askGemini($userQuery)
