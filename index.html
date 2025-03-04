@@ -2,7 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>DigitalPartner AI Assistant</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
@@ -12,6 +14,13 @@
       tailwind.config = {
         theme: {
           extend: {
+            screens: {
+              xs: "320px", // Extra small devices
+              sm: "640px", // Small devices
+              md: "768px", // Medium devices
+              lg: "1024px", // Large devices
+              xl: "1280px", // Extra large devices
+            },
             colors: {
               primary: {
                 DEFAULT: "#2563EB",
@@ -64,9 +73,70 @@
       };
     </script>
     <style>
+      /* Base styles for responsiveness */
       body {
         font-family: "Manrope", sans-serif;
+        overscroll-behavior: contain;
+        touch-action: manipulation;
       }
+
+      /* Responsive chatbot container */
+      #chatbot-container {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        width: calc(100% - 2rem);
+        max-width: 24rem;
+        z-index: 50;
+      }
+
+      /* Responsive chatbot window */
+      #chatbot-window {
+        width: 100%;
+        max-height: 80vh;
+        max-width: 24rem;
+        margin: 0 auto;
+      }
+
+      /* Mobile-specific adjustments */
+      @media (max-width: 640px) {
+        #chatbot-container {
+          bottom: 0.5rem;
+          right: 0.5rem;
+          width: calc(100% - 1rem);
+        }
+
+        #chatbot-window {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          width: 100%;
+          height: 100%;
+          max-height: 100%;
+          border-radius: 0;
+          margin: 0;
+        }
+
+        #chatbot-trigger {
+          position: fixed;
+          bottom: 1rem;
+          right: 1rem;
+        }
+      }
+
+      /* Prevent text scaling on mobile */
+      input,
+      button {
+        font-size: 16px;
+      }
+
+      /* Ensure scrolling works smoothly on mobile */
+      #chat-messages {
+        overscroll-behavior-y: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+
       /* Custom scrollbar */
       .custom-scrollbar::-webkit-scrollbar {
         width: 6px;
@@ -82,6 +152,7 @@
       .custom-scrollbar::-webkit-scrollbar-thumb:hover {
         background: #1d4ed8;
       }
+
       /* Link styling for AI response messages */
       #chat-messages a {
         color: #2563eb; /* Primary blue */
@@ -229,9 +300,15 @@
         if (isHidden) {
           chatbotWindow.classList.remove("hidden");
           chatbotWindow.classList.add("animate-slide-in");
+
+          // Prevent body scrolling on mobile
+          document.body.style.overflow = "hidden";
         } else {
           chatbotWindow.classList.add("hidden");
           chatbotWindow.classList.remove("animate-slide-in");
+
+          // Restore body scrolling
+          document.body.style.overflow = "";
         }
       }
 
@@ -316,6 +393,29 @@
       userQueryInput.addEventListener("blur", () => {
         inputHint.classList.remove("opacity-100");
         inputHint.classList.add("opacity-0");
+      });
+    </script>
+
+    <script>
+      // Prevent zooming on input focus for iOS
+      const inputs = document.querySelectorAll("input");
+      inputs.forEach((input) => {
+        input.addEventListener("focus", () => {
+          document
+            .querySelector('meta[name="viewport"]')
+            .setAttribute(
+              "content",
+              "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+            );
+        });
+        input.addEventListener("blur", () => {
+          document
+            .querySelector('meta[name="viewport"]')
+            .setAttribute(
+              "content",
+              "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+            );
+        });
       });
     </script>
   </body>
