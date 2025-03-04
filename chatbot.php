@@ -7,28 +7,29 @@ header("Content-Type: application/json");
 include_once "./prompt.php";
 include_once "./config.php";
 
-// Function to send a query to Gemini AI
-function askGemini($userQuery)
+// Function to send a query to OpenAI ChatGPT
+function askChatGPT($userQuery)
 {
-    global $GEMINI_API_KEY;
-    $apiKey = $GEMINI_API_KEY;
-    $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$apiKey";
+    global $OPENAI_API_KEY;
+    $apiKey = $OPENAI_API_KEY;
+    $url = "https://api.openai.com/v1/chat/completions";
 
     // Load the chatbot prompt
     $prompt = CHATBOT_PROMPT;
 
     // Structure the full AI request
-    $fullPrompt = "$prompt\n\nUser Query: $userQuery\nAI Response:";
-
     $data = [
-        "contents" => [
-            ["role" => "user", "parts" => [["text" => $fullPrompt]]]
-        ]
+        "model" => "gpt-3.5-turbo",  // Change to "gpt-3.5-turbo" if you want a cheaper model
+        "messages" => [
+            ["role" => "system", "content" => $prompt],
+            ["role" => "user", "content" => $userQuery]
+        ],
+        "temperature" => 0.7
     ];
 
     $options = [
         "http" => [
-            "header"  => "Content-Type: application/json",
+            "header"  => "Content-Type: application/json\r\nAuthorization: Bearer $apiKey",
             "method"  => "POST",
             "content" => json_encode($data)
         ]
@@ -38,7 +39,7 @@ function askGemini($userQuery)
     $result = file_get_contents($url, false, $context);
     $response = json_decode($result, true);
 
-    $rawResponse = $response['candidates'][0]['content']['parts'][0]['text'] ?? "Sorry, I couldn't find relevant information.";
+    $rawResponse = $response['choices'][0]['message']['content'] ?? "Sorry, I couldn't find relevant information.";
 
     // ✅ Remove unwanted markdown/code block formatting
     $cleanResponse = preg_replace('/^```html\s*/', '', $rawResponse);
@@ -51,7 +52,8 @@ function askGemini($userQuery)
 // Handle POST requests from frontend
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $userQuery = $_POST["query"] ?? "";
-    echo askGemini($userQuery);
+    echo askChatGPT($userQuery);
 } else {
     echo json_encode(["error" => "Invalid request"]);
 }
+?>
