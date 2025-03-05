@@ -1,97 +1,55 @@
-# 🤖 DigitalPartner AI Chatbot
+# DigitalPartner AI Assistant
 
-## Overview
+![DigitalPartner AI Assistant Preview](preview.png)
 
-A modern, responsive AI-powered chatbot built with PHP, leveraging OpenAI's ChatGPT API for intelligent conversations.
+The DigitalPartner AI Assistant is an innovative chatbot application designed to provide users with quick and accurate responses to their questions in a conversational format. Built with modern web technologies, this chatbot aims to enhance user experience through its intuitive interface and responsive design.
 
-![Chatbot Preview](https://via.placeholder.com/800x400.png?text=DigitalPartner+AI+Chatbot)
+[View the website](https://digitalpartner.si/)
 
-## 🌟 Features
+## Features
 
-### 🚀 Advanced AI Integration
+- **Conversational Interface**: Engage in natural language conversations with the chatbot.
+- **Responsive Design**: The chatbot adapts seamlessly to various screen sizes, making it accessible on both desktop and mobile devices.
+- **User-Friendly**: Simple input field for user queries, with instant feedback and responses.
+- **Event-Driven Interactions**: The chatbot responds to user actions, such as pressing Enter to submit a query.
 
-- Powered by OpenAI's ChatGPT (GPT-3.5-Turbo)
-- Intelligent, context-aware responses
-- Professional communication style
+## Installation
 
-### 💻 Modern UI/UX
+To set up the DigitalPartner AI Assistant on your local machine, follow these steps:
 
-- Responsive, mobile-friendly design
-- Animated interactions
-- Tailwind CSS styling
-- Elegant, professional interface
+### Clone the Repository
 
-### 🔒 Secure Configuration
+Use the following command to clone the repository to your local machine:
 
-- Input sanitization
-- Robust error handling
+## Usage
 
-## 🛠 Tech Stack
+Once the application is open in your browser, you can start using the chatbot:
 
-- **Backend**: PHP
-- **Frontend**: HTML, Tailwind CSS, Vanilla JavaScript
-- **AI**: OpenAI ChatGPT API
-- **Styling**: Responsive design, smooth animations
+- **Input Queries**: Type your questions or requests into the input field and press Enter. The chatbot will process your input and provide a response.
+- **Toggle Visibility**: The chatbot window can be shown or hidden as needed, allowing for a clean user interface.
 
-## 📦 Prerequisites
+## Technologies Used
 
-- PHP 7.4+
-- OpenAI API Key
-- Web Server (Apache/Nginx)
+The DigitalPartner AI Assistant is built using the following technologies:
 
-## 🔧 Installation
+- **HTML**: For structuring the content and layout of the application.
+- **CSS**: Styled with Tailwind CSS to ensure a modern and responsive design.
+- **JavaScript**: Implements the chatbot functionality and manages user interactions.
 
-### 1. Clone the Repository
+## Contributing
 
-```bash
-git clone https://github.com/yourusername/digitalpartner-ai-chatbot.git
-cd digitalpartner-ai-chatbot
-```
+We welcome contributions from the community! If you have suggestions for improvements, bug fixes, or new features, please follow these steps:
 
-### 2. Configure Environment
+1. **Fork the Repository**: Create your own copy of the repository.
+2. **Create a New Branch**: Use a descriptive name for your branch (e.g., `feature/new-feature`).
+3. **Make Your Changes**: Implement your changes in the codebase.
+4. **Submit a Pull Request**: Once your changes are ready, submit a pull request for review.
 
-1. Add your OpenAI API key to config.php:
+## License
 
-```
-OPENAI_API_KEY=your_api_key_here
-```
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🚀 Running the Chatbot
+## Acknowledgments
 
-1. Start your local web server
-2. Navigate to `index.html`
-3. Interact with DigitalPartner AI!
-
-## 🔐 Security Considerations
-
-- API key stored in `.env`
-- Input sanitization
-- Secure API communication
-- Prevent unauthorized access
-
-## 📂 Project Structure
-
-- `index.html`: Frontend UI
-- `chatbot.php`: Backend API handler
-- `config.php`: Environment configuration
-- `prompt.php`: Chatbot personality and response guidelines
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch
-3. Commit changes
-4. Push to the branch
-5. Create a Pull Request
-
-## 🌐 About DigitalPartner
-
-Innovative digital solutions powered by AI. [Visit our website](https://digitalpartner.si)
-
-## 📄 License
-
-MIT License
-
----
-
-**Made with ❤️ by DigitalPartner AI Team**
+- Thanks to the open-source community for the libraries and tools that made this project possible.
+- Special thanks to all contributors who help improve this project.
