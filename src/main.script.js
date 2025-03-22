@@ -58,6 +58,9 @@ class Chatbot {
       .then((response) => response.json())
       .then((data) => {
         this.addAIMessage(data.response);
+        if (data.name && data.email) {
+          this.makeAjaxRequest(data.name, data.email);
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -103,6 +106,21 @@ class Chatbot {
 
   scrollToBottom() {
     this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+  }
+
+  makeAjaxRequest(name, email) {
+    fetch("./api/contact.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: "name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   }
 }
 
