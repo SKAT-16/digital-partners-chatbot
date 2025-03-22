@@ -7,7 +7,7 @@ header("Content-Type: application/json");
 include_once "./prompt.php";
 include_once "./config.php";
 
-// Function to send a query to OpenAI ChatGPT
+
 function askChatGPT($userQuery)
 {
     global $OPENAI_API_KEY;
@@ -19,7 +19,7 @@ function askChatGPT($userQuery)
 
     // Structure the full AI request
     $data = [
-        "model" => "gpt-3.5-turbo",  // Change to "gpt-3.5-turbo" if you want a cheaper model
+        "model" => "gpt-3.5-turbo",
         "messages" => [
             ["role" => "system", "content" => $prompt],
             ["role" => "user", "content" => $userQuery]
@@ -41,13 +41,64 @@ function askChatGPT($userQuery)
 
     $rawResponse = $response['choices'][0]['message']['content'] ?? "Sorry, I couldn't find relevant information.";
 
-    // ✅ Remove unwanted markdown/code block formatting
-    $cleanResponse = preg_replace('/^```html\s*/', '', $rawResponse);
+    // Use the function to extract name, email, and clean response
+    $extractedData = extractNameAndEmail($rawResponse);
+    $trimmedResponse = cleanResponse($rawResponse);
+
+    // Prepare final response
+    return json_encode([
+        "name" => $extractedData["name"],
+        "email" => $extractedData["email"],
+        "response" => $trimmedResponse,
+        "rawResponse" => $rawResponse
+    ]);
+}
+
+
+function extractNameAndEmail($text)
+{
+    preg_match('/\{.*?\}/s', $text, $matches);
+    $jsonBlock = $matches[0] ?? null;
+
+    // Decode JSON if found
+    if ($jsonBlock) {
+        $userData = json_decode($jsonBlock, true);
+        
+        // Check for JSON decoding errors
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return [
+                "error" => "Invalid JSON format",
+                "name" => null,
+                "email" => null
+            ];
+        }
+
+        return [
+            "name" => $userData['name'] ?? null,
+            "email" => $userData['email'] ?? null
+        ];
+    }
+
+    // If no JSON block is found, return nulls
+    return [
+        "name" => null,
+        "email" => null
+    ];
+}
+
+function cleanResponse($text)
+{
+    // Remove any code block markers (e.g., ```html)
+    $cleanResponse = preg_replace('/^```html\s*/', '', $text);
     $cleanResponse = preg_replace('/\s*```$/', '', $cleanResponse);
 
-    // ✅ Return cleaned response
-    return json_encode(["response" => $cleanResponse]);
+    // Remove the JSON block if it exists
+    $cleanResponse = preg_replace('/\{\s*"name":\s*".*?",\s*"email":\s*".*?"\s*,?\s*\}/', '', $cleanResponse);
+    $cleanResponse = trim($cleanResponse);
+    
+    return $cleanResponse;
 }
+
 
 // Handle POST requests from frontend
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
