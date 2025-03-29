@@ -6,7 +6,9 @@ class Chatbot {
     this.inputHint = document.getElementById("input-hint");
 
     this.initEventListeners();
+    document.getElementById("user-info-form").onsubmit = (event) => this.handleUserInfoSubmit(event);
   }
+
 
   initEventListeners() {
     this.userQueryInput.addEventListener("focus", () => this.showInputHint());
@@ -29,6 +31,47 @@ class Chatbot {
       this.chatbotWindow.classList.add("hidden");
       this.chatbotWindow.classList.remove("animate-slide-in");
       document.body.style.overflow = ""; // Restore body scrolling
+    }
+  }
+
+  handleUserInfoSubmit(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const name = document.getElementById("userName").value.trim();
+    const email = document.getElementById("userEmail").value.trim();
+
+    const nameRegex = /^[A-Za-z\s]+$/;
+    // Inside handleUserInfoSubmit function
+    if (!nameRegex.test(name)) {
+      document.getElementById("name-error").classList.remove("hidden");
+      return;
+    } else {
+      document.getElementById("name-error").classList.add("hidden");
+
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      document.getElementById("email-error").classList.remove("hidden");
+      return;
+    } else {
+      document.getElementById("email-error").classList.add("hidden");
+    }
+
+
+    if (name && email) {
+      // Make AJAX request to save name and email
+      // this.makeAjaxRequest(name, email);
+
+      // Clear the form fields
+      document.getElementById("userName").value = "";
+      document.getElementById("userEmail").value = "";
+
+      // Show the chatbot input
+      document.getElementById("chat-input").classList.remove("hidden");
+      document.getElementById("user-info-form").classList.add("hidden");
+
+      document.getElementById("welcome-message").innerText = `Hi there, ${name}! I'm DigitalPartner AI. How can I assist you today?`;
     }
   }
 
@@ -58,9 +101,6 @@ class Chatbot {
       .then((response) => response.json())
       .then((data) => {
         this.addAIMessage(data.response);
-        if (data.name && data.email) {
-          this.makeAjaxRequest(data.name, data.email);
-        }
       })
       .catch((error) => {
         console.error("Error:", error);
