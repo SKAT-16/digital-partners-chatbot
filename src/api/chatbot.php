@@ -42,49 +42,14 @@ function askChatGPT($userQuery)
     $rawResponse = $response['choices'][0]['message']['content'] ?? "Sorry, I couldn't find relevant information.";
 
     // Use the function to extract name, email, and clean response
-    $extractedData = extractNameAndEmail($rawResponse);
     $trimmedResponse = cleanResponse($rawResponse);
 
     // Prepare final response
     return json_encode([
-        "name" => $extractedData["name"],
-        "email" => $extractedData["email"],
         "response" => $trimmedResponse,
-        "rawResponse" => $rawResponse
     ]);
 }
 
-
-function extractNameAndEmail($text)
-{
-    preg_match('/\{.*?\}/s', $text, $matches);
-    $jsonBlock = $matches[0] ?? null;
-
-    // Decode JSON if found
-    if ($jsonBlock) {
-        $userData = json_decode($jsonBlock, true);
-        
-        // Check for JSON decoding errors
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            return [
-                "error" => "Invalid JSON format",
-                "name" => null,
-                "email" => null
-            ];
-        }
-
-        return [
-            "name" => $userData['name'] ?? null,
-            "email" => $userData['email'] ?? null
-        ];
-    }
-
-    // If no JSON block is found, return nulls
-    return [
-        "name" => null,
-        "email" => null
-    ];
-}
 
 function cleanResponse($text)
 {
