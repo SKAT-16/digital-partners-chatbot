@@ -88,7 +88,7 @@
           <div class="flex items-start space-x-3 animate-slide-in">
             <div
               class="bg-primary-50 text-primary-800 p-3 rounded-xl rounded-tl-none max-w-[80%] shadow-sm">
-              <p>
+              <p id="welcome-message">
                 Hi there! I'm DigitalPartner AI. Please tell me your name and
                 email so we can start.
               </p>
@@ -96,8 +96,47 @@
           </div>
         </div>
 
+        <!-- User Information Form -->
+        <div
+          id="user-info-form"
+          class="p-4 border-t border-neutral-200 bg-neutral-50">
+          <form
+            id="user-info-form"
+            onsubmit="return chatbot.handleUserInfoSubmit(event)">
+            <div class="flex flex-col space-y-2">
+              <input
+                type="text"
+                id="userName"
+                placeholder="Enter your name"
+                required
+                class="border border-neutral-300 rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+              <div id="name-error" class="text-red-500 text-sm hidden">
+                Invalid name.
+              </div>
+
+              <input
+                type="email"
+                id="userEmail"
+                placeholder="Enter your email"
+                required
+                class="border border-neutral-300 rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+              <div id="email-error" class="text-red-500 text-sm hidden">
+                Invalid email.
+              </div>
+              <!-- Error section for email -->
+
+              <button
+                type="submit"
+                class="bg-primary text-white p-2 rounded-full hover:bg-primary-700 transition-colors">
+                Start Chat
+              </button>
+            </div>
+          </form>
+        </div>
         <!-- Chatbot Input -->
-        <div class="p-4 border-t border-neutral-200 bg-neutral-50">
+        <div
+          id="chat-input"
+          class="p-4 border-t border-neutral-200 bg-neutral-50 hidden">
           <div class="relative flex items-center space-x-2">
             <div class="absolute left-3 text-neutral-400 pointer-events-none">
               <svg
